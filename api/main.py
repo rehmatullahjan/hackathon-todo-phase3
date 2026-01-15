@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Depends, HTTPException, Query
+from fastapi import FastAPI, Depends, HTTPException, Query, Request
 from fastapi.middleware.cors import CORSMiddleware
 from sqlmodel import Session
 from typing import List, Optional
@@ -19,9 +19,21 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(lifespan=lifespan, title="Hackathon Todo API", version="3.0.0", root_path="/api")
 
+@app.get("/")
+def read_root():
+    return {"message": "Hackathon Todo API is running", "docs": "/api/docs"}
+
 @app.get("/health")
 def health_check():
-    return {"status": "ok", "version": "3.0.1"}
+    return {"status": "ok", "version": "3.0.2"}
+
+@app.get("/debug")
+def debug_info(request: Request):
+    return {
+        "path": request.url.path,
+        "root_path": request.scope.get("root_path"),
+        "headers": dict(request.headers)
+    }
 
 # Add CORS middleware to allow frontend communication
 app.add_middleware(
