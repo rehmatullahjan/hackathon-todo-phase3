@@ -1,0 +1,8 @@
+fastapi
+sqlmodel
+uvicorn
+python-dotenv
+google-generativeai
+pydantic
+python-dateutil
+psycopg2-binary
